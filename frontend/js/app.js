@@ -1,5 +1,8 @@
 let allBooks = [];
 
+// 🔥 CHANGE 1: YOUR RENDER BACKEND URL
+const BASE_URL = "https://library-management-ctpj.onrender.com";
+
 // ---------- PAGE TOGGLE ----------
 function showLogin() {
     document.getElementById('loginPage').style.display = 'block';
@@ -37,7 +40,7 @@ window.onload = function () {
     // ---------- FETCH BOOKS ----------
     async function fetchBooks() {
         try {
-            const response = await fetch('/books');
+            const response = await fetch(`${BASE_URL}/books`);
             const books = await response.json();
 
             allBooks = books;
@@ -102,7 +105,7 @@ window.onload = function () {
         const author = document.getElementById('author').value;
         const image = document.getElementById('image').value;
 
-        await fetch('/books', {
+        await fetch(`${BASE_URL}/books`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ title, author, image })
@@ -118,17 +121,17 @@ window.onload = function () {
 
 // ---------- ACTIONS ----------
 async function borrowBook(id) {
-    await fetch(`/books/borrow/${id}`, { method: 'PUT' });
+    await fetch(`${BASE_URL}/books/borrow/${id}`, { method: 'PUT' });
     location.reload();
 }
 
 async function returnBook(id) {
-    await fetch(`/books/return/${id}`, { method: 'PUT' });
+    await fetch(`${BASE_URL}/books/return/${id}`, { method: 'PUT' });
     location.reload();
 }
 
 async function deleteBook(id) {
-    await fetch(`/books/${id}`, { method: 'DELETE' });
+    await fetch(`${BASE_URL}/books/${id}`, { method: 'DELETE' });
     location.reload();
 }
 
