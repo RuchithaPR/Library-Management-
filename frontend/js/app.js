@@ -1,6 +1,6 @@
 let allBooks = [];
 
-// 🔥 CHANGE 1: YOUR RENDER BACKEND URL
+// 🔥 Backend URL
 const BASE_URL = "https://library-management-ctpj.onrender.com";
 
 // ---------- PAGE TOGGLE ----------
@@ -105,14 +105,19 @@ window.onload = function () {
         const author = document.getElementById('author').value;
         const image = document.getElementById('image').value;
 
-        await fetch(`${BASE_URL}/books`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title, author, image })
-        });
+        try {
+            await fetch(`${BASE_URL}/books`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, author, image })
+            });
 
-        form.reset();
-        fetchBooks();
+            form.reset();
+            fetchBooks();
+
+        } catch (error) {
+            console.log("Error adding book:", error);
+        }
     });
 
     // ---------- INITIAL LOAD ----------
