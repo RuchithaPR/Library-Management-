@@ -1,33 +1,33 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+const cors = require('cors');
 
 const app = express();
 
-mongoose.connect('mongodb://ruchitha:ruchitha123@ac-dqbimx1-shard-00-00.wd8e7jl.mongodb.net:27017,ac-dqbimx1-shard-00-01.wd8e7jl.mongodb.net:27017,ac-dqbimx1-shard-00-02.wd8e7jl.mongodb.net:27017/libraryDB?ssl=true&replicaSet=atlas-8uzk9r-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0')
-.then(()=>{
-    console.log('MongoDB Connected');
-})
-.catch((err)=>{
-    console.log(err);
-});
-
+// Middleware
+app.use(cors());
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname,'../frontend')));
+// MongoDB Connection
+mongoose.connect('mongodb://ruchitha:ruchitha123@ac-dqbimx1-shard-00-00.wd8e7jl.mongodb.net:27017,ac-dqbimx1-shard-00-01.wd8e7jl.mongodb.net:27017,ac-dqbimx1-shard-00-02.wd8e7jl.mongodb.net:27017/libraryDB?ssl=true&replicaSet=atlas-8uzk9r-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0')
+.then(() => console.log('MongoDB Connected'))
+.catch(err => console.log(err));
 
+// Routes
 const bookRoutes = require('./routes/bookRoutes');
-
 app.use(bookRoutes);
 
-app.get('/', (req,res)=>{
+// Static frontend (optional)
+app.use(express.static(path.join(__dirname, '../frontend')));
 
-    res.sendFile(path.join(__dirname,'../frontend/index.html'));
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
-const PORT = 3000;
+// ✅ FIXED FOR RENDER (IMPORTANT CHANGE ONLY)
+const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, ()=>{
-
+app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
