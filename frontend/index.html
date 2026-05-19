@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <nav>
+        <h2>Library Management</h2>
+
+        <div class="nav-links">
+            <input type="text" id="searchInput" placeholder="Search Books">
+            <button onclick="showHome()">Home</button>
+            <button onclick="showLogin()">Login</button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Welcome To Digital Library</h1>
+        <p>Manage books, borrow books, search books and maintain your library easily.</p>
+    </section>
+
+    <!-- LOGIN PAGE -->
+    <div class="login-container" id="loginPage" style="display:block;">
+        <h1>Admin Login</h1>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <!-- MAIN PAGE -->
+    <div id="mainPage" style="display:none;">
+
+        <div class="dashboard">
+            <div class="card">
+                <h2 id="totalBooks">0</h2>
+                <p>Total Books</p>
+            </div>
+
+            <div class="card">
+                <h2 id="borrowedBooks">0</h2>
+                <p>Borrowed Books</p>
+            </div>
+
+            <div class="card">
+                <h2 id="availableBooks">0</h2>
+                <p>Available Books</p>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <form id="bookForm">
+                <input type="text" id="title" placeholder="Book Title" required>
+                <input type="text" id="author" placeholder="Author Name" required>
+                <input type="text" id="image" placeholder="Book Image URL" required>
+                <button type="submit">Add Book</button>
+            </form>
+
+            <div id="bookList"></div>
+
+        </div>
+    </div>
+
+    <!-- IMPORTANT: DO NOT COMMENT THIS -->
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
