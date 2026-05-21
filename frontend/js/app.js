@@ -1,12 +1,7 @@
 let allBooks = [];
 
-// 🔥 Backend URL
-const BASE_URL = "https://library-management-ctpj.onrender.com";
-
-// ---------- GET ELEMENTS ----------
-const form = document.getElementById('bookForm');
-const bookList = document.getElementById('bookList');
-const searchInput = document.getElementById('searchInput');
+// BACKEND URL
+const BASE_URL = "https://library-management-1-kkbz.onrender.com";
 
 // ---------- PAGE TOGGLE ----------
 function showLogin() {
@@ -28,9 +23,9 @@ function login() {
     if (username === 'admin' && password === 'admin123') {
 
         showHome();
-        fetchBooks();
 
     } else {
+
         alert('Invalid Credentials');
     }
 }
@@ -41,21 +36,25 @@ async function fetchBooks() {
     try {
 
         const response = await fetch(`${BASE_URL}/books`);
+
         const books = await response.json();
 
         allBooks = books;
 
         updateDashboard(books);
+
         displayBooks(books);
 
     } catch (error) {
 
-        console.log("Error fetching books:", error);
+        console.log(error);
     }
 }
 
 // ---------- DISPLAY BOOKS ----------
 function displayBooks(books) {
+
+    const bookList = document.getElementById('bookList');
 
     bookList.innerHTML = '';
 
@@ -70,12 +69,11 @@ function displayBooks(books) {
 
             <p>Author: ${book.author}</p>
 
-            <img src="${book.image}" alt="Book Image" style="width:100px;">
+            <img src="${book.image}" width="120">
 
-            <p>Status:
-                <span class="${book.borrowed ? 'borrowed' : ''}">
-                    ${book.borrowed ? 'Borrowed' : 'Available'}
-                </span>
+            <p>
+                Status:
+                ${book.borrowed ? 'Borrowed' : 'Available'}
             </p>
 
             <button onclick="borrowBook('${book._id}')">
@@ -95,20 +93,8 @@ function displayBooks(books) {
     });
 }
 
-// ---------- SEARCH ----------
-searchInput.addEventListener('keyup', () => {
-
-    const searchText = searchInput.value.toLowerCase();
-
-    const filteredBooks = allBooks.filter(book =>
-        book.title.toLowerCase().includes(searchText)
-    );
-
-    displayBooks(filteredBooks);
-});
-
 // ---------- ADD BOOK ----------
-form.addEventListener('submit', async (e) => {
+document.getElementById('bookForm').addEventListener('submit', async (e) => {
 
     e.preventDefault();
 
@@ -135,17 +121,30 @@ form.addEventListener('submit', async (e) => {
             })
         });
 
-        form.reset();
+        document.getElementById('bookForm').reset();
 
         fetchBooks();
 
     } catch (error) {
 
-        console.log("Error adding book:", error);
+        console.log(error);
     }
 });
 
-// ---------- ACTIONS ----------
+// ---------- SEARCH ----------
+document.getElementById('searchInput').addEventListener('keyup', () => {
+
+    const searchText =
+        document.getElementById('searchInput').value.toLowerCase();
+
+    const filteredBooks = allBooks.filter(book =>
+        book.title.toLowerCase().includes(searchText)
+    );
+
+    displayBooks(filteredBooks);
+});
+
+// ---------- BORROW ----------
 async function borrowBook(id) {
 
     await fetch(`${BASE_URL}/books/borrow/${id}`, {
@@ -155,6 +154,7 @@ async function borrowBook(id) {
     fetchBooks();
 }
 
+// ---------- RETURN ----------
 async function returnBook(id) {
 
     await fetch(`${BASE_URL}/books/return/${id}`, {
@@ -164,6 +164,7 @@ async function returnBook(id) {
     fetchBooks();
 }
 
+// ---------- DELETE ----------
 async function deleteBook(id) {
 
     await fetch(`${BASE_URL}/books/${id}`, {
@@ -178,19 +179,21 @@ function updateDashboard(books) {
 
     const totalBooks = books.length;
 
-    const borrowedBooks = books.filter(book => book.borrowed).length;
+    const borrowedBooks =
+        books.filter(book => book.borrowed).length;
 
-    const availableBooks = totalBooks - borrowedBooks;
+    const availableBooks =
+        totalBooks - borrowedBooks;
 
-    document.getElementById('totalBooks').innerText = totalBooks;
+    document.getElementById('totalBooks').innerText =
+        totalBooks;
 
-    document.getElementById('borrowedBooks').innerText = borrowedBooks;
+    document.getElementById('borrowedBooks').innerText =
+        borrowedBooks;
 
-    document.getElementById('availableBooks').innerText = availableBooks;
+    document.getElementById('availableBooks').innerText =
+        availableBooks;
 }
 
 // ---------- INITIAL LOAD ----------
-window.onload = () => {
-
-    fetchBooks();
-};
+fetchBooks();
